@@ -1,11 +1,12 @@
-// SHAN DLS LEAGUE Firebase configuration
-// Replace these placeholder values with your Firebase Web App config.
+// SHAN DLS LEAGUE Firebase Web App configuration
+// Realtime Database URL will be filled after the database is created.
 window.SHAN_FIREBASE_CONFIG = {
-  apiKey: "PASTE_API_KEY_HERE",
-  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://PASTE_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "PASTE_PROJECT_ID",
-  storageBucket: "PASTE_PROJECT_ID.appspot.com",
-  messagingSenderId: "PASTE_SENDER_ID",
-  appId: "PASTE_APP_ID"
+  apiKey: "AIzaSyB-6cwNal0PUq2fyI9cN3zsfC8EacjsyJU",
+  authDomain: "shan-dls-league.firebaseapp.com",
+  databaseURL: "https://ADD-REALTIME-DATABASE-URL-HERE",
+  projectId: "shan-dls-league",
+  storageBucket: "shan-dls-league.firebasestorage.app",
+  messagingSenderId: "295550628871",
+  appId: "1:295550628871:web:8653c28420749e3dbae6a2",
+  measurementId: "G-77KZGGHECW"
 };
