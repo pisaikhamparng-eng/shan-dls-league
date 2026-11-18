@@ -2,7 +2,7 @@
   "rules": {
     "siteData": {
       ".read": true,
-      ".write": "auth != null && auth.uid === 'REPLACE_WITH_ADMIN_UID'"
+      ".write": "auth != null && auth.uid === '4rwhpj4AJAYUCApVfiPaM922NxW2'"
     }
   }
 }
