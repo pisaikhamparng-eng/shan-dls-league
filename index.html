@@ -1,85 +1,105 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SHAN DLS LEAGUE | Official Website</title>
-  <meta name="description" content="Official website of SHAN DLS LEAGUE. Follow league standings, fixtures, results, teams, player statistics, SHAN DLS Championship and cup competitions.">
-  <meta name="robots" content="index,follow">
-  <meta name="theme-color" content="#071a2b">
-  <meta property="og:title" content="SHAN DLS LEAGUE | Official Website">
-  <meta property="og:description" content="ONE LEAGUE • ONE DREAM • ONE CHAMPION">
-  <meta property="og:type" content="website">
-  <style>
-    :root{--navy:#071a2b;--navy2:#0d2940;--gold:#e5bd59;--cream:#f4f1e8;--muted:#aab8c5;--line:#294256}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#061522;color:var(--cream);font-family:Arial,Helvetica,sans-serif}
-    a{color:inherit;text-decoration:none}.wrap{width:min(1120px,92%);margin:auto}
-    header{position:sticky;top:0;z-index:5;background:rgba(5,20,33,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
-    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
-    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:1px}.crest{width:42px;height:42px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:12px;font-weight:900}
-    .brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:2px;margin-top:3px}
-    nav{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:#d7e0e7}nav a:hover{color:var(--gold)}
-    .hero{padding:74px 0 58px;background:radial-gradient(ellipse at 80% 20%,#1a3d56 0,transparent 48%),linear-gradient(135deg,#071a2b,#0d2940 60%,#071a2b);border-bottom:1px solid var(--line)}
-    .eyebrow{color:var(--gold);font-size:11px;font-weight:bold;letter-spacing:3px}
-    h1{font-size:clamp(34px,7vw,68px);line-height:.98;margin:15px 0;color:#fff;letter-spacing:-2px}
-    .slogan{font-size:13px;letter-spacing:2px;color:#d5dce2;font-weight:bold}
-    .hero p{color:#bdcbd5;max-width:600px;line-height:1.7;font-size:14px}
-    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.btn{padding:12px 17px;border-radius:4px;background:var(--gold);color:#142332;font-weight:800;font-size:12px}.btn.alt{background:transparent;border:1px solid #71899b;color:#fff}
-    section{padding:44px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:20px}
-    h2{font-size:22px;margin:0;color:#fff}.sub{color:var(--muted);font-size:12px;margin-top:6px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.panel{background:linear-gradient(145deg,#102c43,#0a2032);border:1px solid var(--line);border-radius:8px;padding:19px;min-height:130px}
-    .panel .num{font-size:10px;color:var(--gold);letter-spacing:2px;font-weight:bold}.panel h3{margin:12px 0 7px;font-size:17px}.panel p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
-    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px;background:#0a2032}
-    table{width:100%;border-collapse:collapse;min-width:540px;font-size:12px}th,td{padding:13px 12px;text-align:left;border-bottom:1px solid var(--line)}th{color:var(--gold);font-size:10px;letter-spacing:1px;background:#102c43}td{color:#d8e0e6}.empty{text-align:center;color:var(--muted);padding:25px}
-    .notice{border-left:3px solid var(--gold);padding:13px 16px;background:#10283b;color:#c5d1d9;font-size:12px;line-height:1.6;margin-top:14px}
-    footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:11px}.foot{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
-    @media(max-width:760px){.nav{align-items:flex-start;padding:13px 0;flex-direction:column}nav{gap:12px}.hero{padding:55px 0 44px}.grid{grid-template-columns:1fr 1fr}.section-head{align-items:flex-start;flex-direction:column}}
-    @media(max-width:480px){.grid{grid-template-columns:1fr}.slogan{font-size:10px;letter-spacing:1px}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="SHAN DLS LEAGUE Official Website — fixtures, results, standings, clubs and player statistics.">
+<meta property="og:title" content="SHAN DLS LEAGUE | Official Website">
+<meta property="og:description" content="ONE LEAGUE • ONE DREAM • ONE CHAMPION">
+<meta property="og:type" content="website">
+<title>SHAN DLS LEAGUE | Official Website</title>
+<style>
+:root{--bg:#080909;--surface:#111313;--surface2:#171a19;--gold:#d8b45b;--gold2:#f0d68d;--white:#f6f4ee;--muted:#a4a59e;--line:#2a2d29;--green:#a5b19a}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,Arial,Helvetica,sans-serif}a{color:inherit;text-decoration:none}button{font:inherit}.container{width:min(1160px,92%);margin:auto}
+.topline{height:3px;background:linear-gradient(90deg,#8d6b29,var(--gold2),#8d6b29)}
+header{position:sticky;top:0;z-index:20;background:rgba(8,9,9,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-mark{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--gold);color:var(--gold2);font-weight:900;font-size:12px;letter-spacing:-1px;clip-path:polygon(50% 0,91% 16%,91% 72%,50% 100%,9% 72%,9% 16%)}.brand-name{font-weight:900;letter-spacing:1.5px;font-size:14px;white-space:nowrap}.brand-sub{font-size:9px;color:var(--gold);letter-spacing:2.5px;margin-top:5px}
+nav{display:flex;align-items:center;gap:20px}nav a{font-size:10px;letter-spacing:1.2px;color:#c6c5bd;font-weight:800;transition:.2s}nav a:hover,nav a.active{color:var(--gold2)}
+.menu-btn{display:none;border:1px solid var(--line);background:var(--surface);color:var(--gold);padding:9px 12px;border-radius:3px}
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:radial-gradient(ellipse at 78% 40%,rgba(180,139,53,.16),transparent 42%),linear-gradient(120deg,#0b0d0c,#151714 54%,#090a09)}
+.hero:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 42px,rgba(255,255,255,.018) 43px 44px);pointer-events:none}
+.hero-inner{position:relative;z-index:1;padding:82px 0 76px;max-width:820px}
+.kicker{font-size:10px;letter-spacing:4px;color:var(--gold);font-weight:900}.hero h1{font-size:clamp(42px,8vw,88px);line-height:.94;letter-spacing:-3px;margin:20px 0 17px;font-weight:950}.hero h1 span{color:var(--gold2)}
+.slogan{font-size:12px;letter-spacing:2.6px;color:#ddd9cb;font-weight:800}.hero-copy{max-width:590px;color:#b7b8b0;font-size:14px;line-height:1.8;margin:22px 0 0}
+.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:2px;background:var(--gold);color:#11120f;font-size:10px;letter-spacing:1.2px;font-weight:900;border:1px solid var(--gold);cursor:pointer}.btn.secondary{background:transparent;color:var(--white);border-color:#55584e}.btn:hover{filter:brightness(1.1)}
+.hero-foot{display:flex;gap:26px;flex-wrap:wrap;margin-top:46px;padding-top:22px;border-top:1px solid #34372f}.hero-stat strong{display:block;color:var(--gold2);font-size:20px}.hero-stat span{display:block;color:#92948c;font-size:9px;letter-spacing:1.5px;margin-top:5px}
+section{padding:66px 0;border-bottom:1px solid #20231f}.section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:25px}.eyebrow{color:var(--gold);font-size:9px;letter-spacing:2.7px;font-weight:900;margin-bottom:9px}.section-head h2{font-size:clamp(23px,4vw,32px);letter-spacing:-.6px;margin:0}.section-desc{font-size:12px;color:var(--muted);line-height:1.6;max-width:440px}
+.competition-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.comp-card{position:relative;min-height:176px;padding:23px;background:linear-gradient(145deg,#171a17,#0e100f);border:1px solid var(--line);transition:.22s;overflow:hidden}.comp-card:hover{border-color:#8f753d;transform:translateY(-2px)}.comp-num{font-size:9px;letter-spacing:2px;color:var(--gold);font-weight:900}.comp-card h3{font-size:17px;line-height:1.25;margin:20px 0 9px}.comp-card p{font-size:11px;line-height:1.6;color:var(--muted);margin:0}.comp-arrow{position:absolute;right:20px;bottom:17px;color:var(--gold);font-size:19px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tab{padding:10px 14px;background:#111412;border:1px solid var(--line);color:#aaa99f;font-size:10px;letter-spacing:1px;font-weight:900;cursor:pointer}.tab[aria-selected=true]{background:#302719;border-color:var(--gold);color:var(--gold2)}
+.table-shell{border:1px solid var(--line);background:#0e1110;overflow:hidden}.table-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line);color:#c8c7be;font-size:11px}.table-top strong{color:var(--gold2);letter-spacing:1px}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:620px}th{padding:13px 14px;text-align:left;background:#171a17;color:var(--gold);font-size:9px;letter-spacing:1.3px}td{padding:14px;border-top:1px solid #242823;color:#c9c9c1;font-size:11px}.empty-state{padding:40px 20px;text-align:center}.empty-icon{width:44px;height:44px;border:1px solid #5c4a27;color:var(--gold);display:grid;place-items:center;margin:0 auto 14px;font-size:19px}.empty-state h3{font-size:14px;margin:0 0 7px}.empty-state p{font-size:11px;line-height:1.7;color:var(--muted);margin:0 auto;max-width:440px}
+.info-strip{margin-top:14px;padding:13px 16px;border-left:2px solid var(--gold);background:#151713;color:#aaa99f;font-size:11px;line-height:1.7}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.stat-card{padding:22px;border:1px solid var(--line);background:var(--surface);min-height:155px}.stat-label{color:var(--gold);font-size:9px;letter-spacing:2px;font-weight:900}.stat-card h3{font-size:17px;margin:17px 0 8px}.stat-card p{font-size:11px;color:var(--muted);line-height:1.6;margin:0}
+.club-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.club-placeholder{border:1px dashed #3a3d35;background:#101210;padding:19px 12px;text-align:center;color:#9c9d94;font-size:10px;letter-spacing:1px}
+.about-box{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;padding:28px;border:1px solid var(--line);background:linear-gradient(120deg,#151815,#0d0f0e)}.about-box h3{font-size:19px;margin:0 0 12px}.about-box p{font-size:12px;color:#b2b3aa;line-height:1.8;margin:0}.about-side{border-left:1px solid var(--line);padding-left:22px;display:flex;flex-direction:column;justify-content:center;gap:9px}.about-side span{font-size:9px;color:var(--gold);letter-spacing:2px}.about-side strong{font-size:12px;color:#e8e5d9}
+footer{padding:27px 0;color:#8f9088;font-size:10px}.footer-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}.footer-brand{color:var(--gold);font-weight:900;letter-spacing:1px}
+@media(max-width:850px){nav{gap:12px}nav a{font-size:9px}.competition-grid{grid-template-columns:repeat(2,1fr)}.club-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){.nav{min-height:68px}.menu-btn{display:block}nav{display:none;position:absolute;top:68px;left:0;right:0;padding:16px 4%;background:#0b0d0c;border-bottom:1px solid var(--line);flex-direction:column;align-items:flex-start}nav.open{display:flex}nav a{font-size:11px;padding:6px 0}.hero-inner{padding:62px 0 52px}.hero h1{letter-spacing:-2px}.hero-foot{gap:18px}.section-head{align-items:flex-start;flex-direction:column}section{padding:49px 0}.stat-grid{grid-template-columns:1fr}.about-box{grid-template-columns:1fr}.about-side{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}.club-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.competition-grid{grid-template-columns:1fr}.brand-name{font-size:12px}.brand-mark{width:39px;height:39px}.slogan{font-size:9px;letter-spacing:1.6px}}
+</style>
 </head>
 <body>
-<header><div class="wrap nav">
-  <a class="brand" href="#home"><span class="crest">DLS</span><span>SHAN DLS LEAGUE<small>OFFICIAL COMPETITION</small></span></a>
-  <nav aria-label="Main navigation">
-    <a href="#competitions">COMPETITIONS</a><a href="#table">STANDINGS</a><a href="#stats">STATISTICS</a><a href="#about">ABOUT</a>
-  </nav>
-</div></header>
+<div class="topline"></div>
+<header><div class="container nav">
+<a class="brand" href="#home" aria-label="SHAN DLS LEAGUE home"><span class="brand-mark">DLS</span><span><span class="brand-name">SHAN DLS LEAGUE</span><span class="brand-sub">OFFICIAL WEBSITE</span></span></a>
+<button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mainNav">MENU ☰</button>
+<nav id="mainNav" aria-label="Main navigation">
+<a href="#competitions">COMPETITIONS</a><a href="#standings">STANDINGS</a><a href="#fixtures">FIXTURES</a><a href="#clubs">CLUBS</a><a href="#statistics">STATISTICS</a><a href="#about">ABOUT</a>
+</nav></div></header>
 <main id="home">
-  <div class="hero"><div class="wrap">
-    <div class="eyebrow">THE OFFICIAL HOME OF SHAN DLS</div>
-    <h1>SHAN DLS<br>LEAGUE</h1>
-    <div class="slogan">ONE LEAGUE • ONE DREAM • ONE CHAMPION</div>
-    <p>Welcome to the official home of SHAN DLS LEAGUE. Follow competition news, league standings, match results and player statistics.</p>
-    <div class="actions"><a class="btn" href="#competitions">EXPLORE COMPETITIONS</a><a class="btn alt" href="#table">VIEW STANDINGS</a></div>
-  </div></div>
-  <section id="competitions"><div class="wrap">
-    <div class="section-head"><div><h2>COMPETITIONS</h2><div class="sub">The SHAN DLS competition system</div></div></div>
-    <div class="grid">
-      <article class="panel"><div class="num">01 / DIVISION ONE</div><h3>SHAN DLS LEAGUE</h3><p>Main league competition · 20 teams</p></article>
-      <article class="panel"><div class="num">02 / DIVISION TWO</div><h3>SHAN DLS CHAMPIONSHIP</h3><p>Second division competition · 20 teams · U20 eligibility rules to be confirmed</p></article>
-      <article class="panel"><div class="num">03 / DOMESTIC CUP</div><h3>SHAN DLS CUP</h3><p>Knockout cup open to eligible clubs from both divisions</p></article>
-      <article class="panel"><div class="num">04 / CONTINENTAL TIER 1</div><h3>SHAN DLS CHAMPIONS LEAGUE</h3><p>Top-level continental competition</p></article>
-      <article class="panel"><div class="num">05 / CONTINENTAL TIER 2</div><h3>SHAN DLS ELITE LEAGUE</h3><p>Second-level continental competition</p></article>
-      <article class="panel"><div class="num">06 / SEASON OPENER</div><h3>SHAN DLS SUPER CUP</h3><p>Season-ending super cup between the League Champion and SHAN DLS Cup winner</p></article>
-    </div>
-  </div></section>
-  <section id="table"><div class="wrap">
-    <div class="section-head"><div><h2>LEAGUE STANDINGS</h2><div class="sub">Official table will appear here after verified results are added</div></div></div>
-    <div class="table-wrap"><table><thead><tr><th>POS</th><th>CLUB</th><th>MP</th><th>W</th><th>D</th><th>L</th><th>PTS</th></tr></thead><tbody><tr><td colspan="7" class="empty">Standings are being prepared for the new season.</td></tr></tbody></table></div>
-    <div class="notice">This is the initial website layout. Official team names, logos, fixtures, results and standings will be added after the league data is confirmed.</div>
-  </div></section>
-  <section id="stats"><div class="wrap">
-    <div class="section-head"><div><h2>PLAYER STATISTICS</h2><div class="sub">Season statistics and individual awards</div></div></div>
-    <div class="grid">
-      <article class="panel"><div class="num">GOALS</div><h3>TOP SCORERS</h3><p>Official goals leaderboard will be published here.</p></article>
-      <article class="panel"><div class="num">CREATIVITY</div><h3>TOP ASSISTS</h3><p>Official assists leaderboard will be published here.</p></article>
-      <article class="panel"><div class="num">GOALKEEPERS</div><h3>CLEAN SHEETS</h3><p>Official goalkeeper statistics will be published here.</p></article>
-    </div>
-  </div></section>
-  <section id="about"><div class="wrap">
-    <div class="section-head"><div><h2>ABOUT SHAN DLS LEAGUE</h2><div class="sub">ONE LEAGUE • ONE DREAM • ONE CHAMPION</div></div></div>
-    <div class="panel"><p>SHAN DLS LEAGUE is a community Dream League Soccer competition. This website is intended as the official public information hub for competition announcements, rules, clubs, fixtures, results and statistics.</p><p style="color:#aab8c5;font-size:12px;line-height:1.7">Official contact and social media links will be added when confirmed by the league administrators.</p></div>
-  </div></section>
+<div class="hero"><div class="container"><div class="hero-inner">
+<div class="kicker">THE OFFICIAL HOME OF SHAN DLS</div>
+<h1>ONE LEAGUE.<br><span>ONE DREAM.</span><br>ONE CHAMPION.</h1>
+<div class="slogan">SHAN DLS LEAGUE · OFFICIAL COMPETITION</div>
+<p class="hero-copy">Welcome to the official public hub of SHAN DLS LEAGUE. Follow the competitions, league tables, match schedules, results, clubs and player performances throughout the season.</p>
+<div class="hero-actions"><a class="btn" href="#competitions">EXPLORE COMPETITIONS</a><a class="btn secondary" href="#standings">VIEW STANDINGS</a></div>
+<div class="hero-foot"><div class="hero-stat"><strong>20</strong><span>LEAGUE TEAMS</span></div><div class="hero-stat"><strong>20</strong><span>CHAMPIONSHIP TEAMS</span></div><div class="hero-stat"><strong>40</strong><span>DLS CUP CLUBS</span></div><div class="hero-stat"><strong>06</strong><span>COMPETITIONS</span></div></div>
+</div></div></div>
+<section id="competitions"><div class="container">
+<div class="section-head"><div><div class="eyebrow">THE TOURNAMENTS</div><h2>OUR COMPETITIONS</h2></div><div class="section-desc">Six competitions. One football community. Follow every title race and knockout journey.</div></div>
+<div class="competition-grid">
+<a class="comp-card" href="#standings"><div class="comp-num">01 / FIRST DIVISION</div><h3>SHAN DLS LEAGUE</h3><p>20 clubs competing for the main league title.</p><span class="comp-arrow">↗</span></a>
+<a class="comp-card" href="#standings"><div class="comp-num">02 / SECOND DIVISION</div><h3>SHAN DLS CHAMPIONSHIP</h3><p>20 clubs competing in the second division.</p><span class="comp-arrow">↗</span></a>
+<a class="comp-card" href="#fixtures"><div class="comp-num">03 / DOMESTIC KNOCKOUT</div><h3>SHAN DLS CUP</h3><p>A knockout competition featuring 40 clubs from both divisions.</p><span class="comp-arrow">↗</span></a>
+<a class="comp-card" href="#fixtures"><div class="comp-num">04 / CONTINENTAL</div><h3>SHAN DLS CHAMPIONS LEAGUE</h3><p>The premier continental club competition.</p><span class="comp-arrow">↗</span></a>
+<a class="comp-card" href="#fixtures"><div class="comp-num">05 / CONTINENTAL</div><h3>SHAN DLS ELITE LEAGUE</h3><p>A second continental competition for participating clubs.</p><span class="comp-arrow">↗</span></a>
+<a class="comp-card" href="#fixtures"><div class="comp-num">06 / SPECIAL MATCH</div><h3>SHAN DLS SUPER CUP</h3><p>League Champion vs SHAN DLS Cup Champion.</p><span class="comp-arrow">↗</span></a>
+</div></div></section>
+<section id="standings"><div class="container">
+<div class="section-head"><div><div class="eyebrow">THE RACE FOR THE TITLE</div><h2>LEAGUE STANDINGS</h2></div><div class="section-desc">Official tables will be displayed here. Switch between the first and second divisions.</div></div>
+<div class="tabs" role="tablist" aria-label="League standings"><button class="tab" role="tab" aria-selected="true" data-division="league">SHAN DLS LEAGUE</button><button class="tab" role="tab" aria-selected="false" data-division="championship">CHAMPIONSHIP</button></div>
+<div class="table-shell"><div class="table-top"><strong id="tableTitle">SHAN DLS LEAGUE</strong><span id="teamCount">20 CLUBS</span></div><div class="table-scroll"><table><thead><tr><th>POS</th><th>CLUB</th><th>MP</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>PTS</th></tr></thead><tbody id="standingRows"><tr><td colspan="10"><div class="empty-state"><div class="empty-icon">✦</div><h3>Standings coming soon</h3><p>Official club list and verified match results have not been published to this website yet.</p></div></td></tr></tbody></table></div></div>
+<div class="info-strip">Only confirmed official results will be reflected in the league tables. This website is a public viewer; visitors cannot edit competition data.</div>
+</div></section>
+<section id="fixtures"><div class="container">
+<div class="section-head"><div><div class="eyebrow">MATCH CENTRE</div><h2>FIXTURES & RESULTS</h2></div><div class="section-desc">Upcoming matches and completed results will be listed by competition when official schedules are released.</div></div>
+<div class="tabs" role="tablist" aria-label="Match competition"><button class="tab" aria-selected="true" data-match="all">ALL</button><button class="tab" aria-selected="false" data-match="league">LEAGUE</button><button class="tab" aria-selected="false" data-match="championship">CHAMPIONSHIP</button><button class="tab" aria-selected="false" data-match="cup">DLS CUP</button><button class="tab" aria-selected="false" data-match="continental">CONTINENTAL</button></div>
+<div class="table-shell"><div class="table-top"><strong>MATCH CENTRE</strong><span id="matchFilterLabel">ALL COMPETITIONS</span></div><div class="empty-state"><div class="empty-icon">⚽</div><h3>Fixtures will be announced here</h3><p>Match dates, kick-off times, team names and full-time scores will appear here after the official schedule and results are added.</p></div></div>
+</div></section>
+<section id="clubs"><div class="container">
+<div class="section-head"><div><div class="eyebrow">THE CLUBS</div><h2>CLUB DIRECTORY</h2></div><div class="section-desc">Explore participating clubs, official badges and squad information. Club profiles will be published when the team list is confirmed.</div></div>
+<div class="club-grid"><div class="club-placeholder">FIRST DIVISION · 20 CLUBS</div><div class="club-placeholder">CHAMPIONSHIP · 20 CLUBS</div><div class="club-placeholder">OFFICIAL CLUB BADGES</div><div class="club-placeholder">PLAYER SQUADS</div></div>
+<div class="info-strip">Club names, original team logos, player photos and squad details will be used as supplied by the league. No unofficial club identities are shown.</div>
+</div></section>
+<section id="statistics"><div class="container">
+<div class="section-head"><div><div class="eyebrow">PLAYER PERFORMANCE</div><h2>SEASON STATISTICS</h2></div><div class="section-desc">Individual leaderboards will be updated from confirmed match statistics.</div></div>
+<div class="stat-grid"><article class="stat-card"><div class="stat-label">GOALSCORING</div><h3>TOP 10 SCORERS</h3><p>The leading goalscorers across the official competitions.</p></article><article class="stat-card"><div class="stat-label">CHANCE CREATION</div><h3>TOP 10 ASSISTS</h3><p>The players contributing the most assists.</p></article><article class="stat-card"><div class="stat-label">GOALKEEPING</div><h3>TOP 10 CLEAN SHEETS</h3><p>The goalkeepers with the most clean sheets.</p></article></div>
+</div></section>
+<section id="about"><div class="container">
+<div class="section-head"><div><div class="eyebrow">OUR COMMUNITY</div><h2>ABOUT THE LEAGUE</h2></div></div>
+<div class="about-box"><div><h3>SHAN DLS LEAGUE</h3><p>SHAN DLS LEAGUE is a community Dream League Soccer competition built around fair play, competitive football and respect between every participating club. This official website is the public information centre for league news, competitions, match schedules, results, club information and player statistics.</p></div><div class="about-side"><span>OUR MOTTO</span><strong>ONE LEAGUE • ONE DREAM • ONE CHAMPION</strong><span>PUBLIC ACCESS</span><strong>VIEWER WEBSITE · OFFICIAL INFORMATION</strong></div></div>
+</div></section>
 </main>
-<footer><div class="wrap foot"><span>© SHAN DLS LEAGUE. All rights reserved.</span><span>OFFICIAL WEBSITE · SEASON 2</span></div></footer>
-</body></html>
+<footer><div class="container footer-inner"><span class="footer-brand">SHAN DLS LEAGUE</span><span>ONE LEAGUE • ONE DREAM • ONE CHAMPION</span><span>© <span id="year"></span> SHAN DLS LEAGUE. ALL RIGHTS RESERVED.</span></div></footer>
+<script>
+const menuBtn=document.getElementById('menuBtn'),mainNav=document.getElementById('mainNav');
+menuBtn.addEventListener('click',()=>{const open=mainNav.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(open));});
+mainNav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mainNav.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');}));
+document.querySelectorAll('[data-division]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-division]').forEach(b=>b.setAttribute('aria-selected',String(b===btn)));const championship=btn.dataset.division==='championship';document.getElementById('tableTitle').textContent=championship?'SHAN DLS CHAMPIONSHIP':'SHAN DLS LEAGUE';document.getElementById('teamCount').textContent='20 CLUBS';document.getElementById('standingRows').innerHTML='<tr><td colspan="10"><div class="empty-state"><div class="empty-icon">✦</div><h3>Standings coming soon</h3><p>Official club list and verified match results have not been published to this website yet.</p></div></td></tr>';}));
+const matchLabels={all:'ALL COMPETITIONS',league:'SHAN DLS LEAGUE',championship:'SHAN DLS CHAMPIONSHIP',cup:'SHAN DLS CUP',continental:'CHAMPIONS LEAGUE & ELITE LEAGUE'};
+document.querySelectorAll('[data-match]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-match]').forEach(b=>b.setAttribute('aria-selected',String(b===btn)));document.getElementById('matchFilterLabel').textContent=matchLabels[btn.dataset.match];}));
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
