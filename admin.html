@@ -18,7 +18,7 @@
 <div class="stats"><div class="stat"><b id="teamTotal">0</b><span>TEAMS</span></div><div class="stat"><b id="matchTotal">0</b><span>MATCHES</span></div><div class="stat"><b id="playerTotal">0</b><span>PLAYERS</span></div></div>
 <div class="tabs"><button class="tab active" data-tab="teams">TEAMS</button><button class="tab" data-tab="matches">MATCH RESULTS</button><button class="tab" data-tab="players">PLAYERS & STATS</button></div>
 <div class="panel active" id="teams">
-<div class="card"><h2 class="h">Add / Update Team</h2><div class="grid"><div><label>Team Name</label><input id="teamName" placeholder="Team name"></div><div><label>Division</label><select id="teamDivision"><option value="league">SHAN DLS LEAGUE</option><option value="championship">CHAMPIONSHIP</option></select></div><div><label>Logo Image URL (optional)</label><input id="teamLogo" placeholder="https://..."></div><div><label>Short Name (optional)</label><input id="teamShort" placeholder="ABC"></div></div><div class="actions"><button id="saveTeam">SAVE TEAM</button><button class="secondary" id="clearTeam">CLEAR</button></div><div class="status" id="teamStatus"></div></div><div class="card"><h2 class="h">Registered Teams</h2><div class="list" id="teamList"></div></div>
+<div class="card"><h2 class="h">Add / Update Team</h2><div class="grid"><div><label>Team Name</label><input id="teamName" placeholder="Team name"></div><div><label>Division</label><select id="teamDivision"><option value="league">SHAN DLS LEAGUE</option><option value="championship">CHAMPIONSHIP</option></select></div><div><label>Logo Image URL (optional)</label><input id="teamLogo" placeholder="https://..."></div><div><label>Short Name (optional)</label><input id="teamShort" placeholder="ABC"></div></div><div class="actions"><button id="saveTeam">SAVE TEAM</button><button class="secondary" id="clearTeam">CLEAR</button></div><div class="status" id="teamStatus"></div></div><div class="card"><h2 class="h">Registered Teams</h2><div class="notice">Division တစ်ခုစီ အသင်း ၂၀ ပြည့်သွားလျှင် ၃၈ Rounds / ၃၈၀ ပွဲကို အလိုအလျောက် ဖန်တီးပေးပါမည်။ လိုအပ်ပါက အောက်ပါခလုတ်ဖြင့်လည်း ဖန်တီးနိုင်ပါသည်။</div><div class="actions"><button id="generateFixtures">GENERATE ALL FIXTURES</button></div><div class="status" id="fixtureStatus"></div><div class="list" id="teamList"></div></div>
 </div>
 <div class="panel" id="matches">
 <div class="card"><h2 class="h">Add Match / Enter Result</h2><div class="grid"><div><label>Competition</label><select id="matchComp"><option value="league">SHAN DLS LEAGUE</option><option value="championship">CHAMPIONSHIP</option><option value="cup">SHAN DLS CUP</option><option value="champions">SHAN DLS CHAMPIONS LEAGUE</option><option value="elite">SHAN DLS ELITE LEAGUE</option><option value="supercup">SHAN DLS SUPER CUP</option></select></div><div><label>Match Date</label><input id="matchDate" type="date"></div><div><label>Home Team</label><select id="homeTeam"></select></div><div><label>Away Team</label><select id="awayTeam"></select></div><div><label>Home Score</label><input id="homeScore" type="number" min="0" value="0"></div><div><label>Away Score</label><input id="awayScore" type="number" min="0" value="0"></div><div><label>Status</label><select id="matchStatus"><option value="scheduled">Scheduled</option><option value="completed">Full Time</option></select></div><div><label>Round / Matchday (optional)</label><input id="matchRound" placeholder="Round 1"></div></div><div class="actions"><button id="saveMatch">SAVE MATCH</button><button class="secondary" id="clearMatch">CLEAR</button></div><div class="status" id="matchStatusText"></div></div><div class="card"><h2 class="h">Matches</h2><div class="list" id="matchList"></div></div>
@@ -45,16 +45,53 @@ async function save(path,obj,key){const id=key||db.ref('siteData/'+path).push().
 async function del(path,id){if(confirm('Delete this record?')){await db.ref('siteData/'+path+'/'+id).remove();await load();}}
 function clearTeam(){edit.team=null;['teamName','teamLogo','teamShort'].forEach(x=>$(x).value='');$('teamDivision').value='league';}
 function clearMatch(){edit.match=null;['homeTeam','awayTeam'].forEach(x=>$(x).value='');$('matchDate').value='';$('homeScore').value='0';$('awayScore').value='0';$('matchStatus').value='scheduled';$('matchRound').value='';$('matchComp').value='league';}
+async function generateFixturesForDivision(division,automatic=false){
+ const divisionTeams=values(data.teams).filter(t=>(t.division||'league')===division);
+ if(divisionTeams.length!==20)return {created:0,message:division+' has '+divisionTeams.length+'/20 teams.'};
+ const existing=values(data.matches).filter(m=>m.competition===division);
+ if(existing.length)return {created:0,message:division+' already has '+existing.length+' matches; existing matches were left unchanged.'};
+ const rotation=divisionTeams.map(t=>({id:t.id,name:t.name}));
+ const firstLeg=[];
+ for(let r=0;r<19;r++){
+  for(let i=0;i<10;i++){
+   const x=rotation[i],y=rotation[19-i];
+   const home=(r%2===0)?x:y,away=(r%2===0)?y:x;
+   firstLeg.push({round:r+1,home,away});
+  }
+  const last=rotation.pop();rotation.splice(1,0,last);
+ }
+ const batch={};
+ const add=(round,home,away)=>{
+  const id=db.ref('siteData/matches').push().key;
+  batch[id]={competition:division,date:'',homeTeam:home.id,awayTeam:away.id,homeName:home.name,awayName:away.name,homeScore:0,awayScore:0,status:'scheduled',round:'Round '+round,autoGenerated:true};
+ };
+ firstLeg.forEach(m=>add(m.round,m.home,m.away));
+ firstLeg.forEach(m=>add(m.round+19,m.away,m.home));
+ await db.ref('siteData/matches').update(batch);
+ await load();
+ return {created:Object.keys(batch).length,message:division+' fixtures created.'};
+}
+async function generateAllFixtures(automatic=false){
+ try{
+  const results=[];
+  for(const division of ['league','championship']){
+   const result=await generateFixturesForDivision(division,automatic);
+   results.push(result.message);
+  }
+  status('fixtureStatus',results.join(' '));
+ }catch(e){status('fixtureStatus','Fixture generation failed: '+e.message);}
+}
 function clearPlayer(){edit.player=null;['playerName','playerGoals','playerAssists','playerCS','playerApps'].forEach(x=>$(x).value='');['playerGoals','playerAssists','playerCS','playerApps'].forEach(x=>$(x).value='0');$('playerTeam').value='';}
 $('loginBtn').onclick=async()=>{try{await auth.signInWithEmailAndPassword($('email').value.trim(),$('password').value);status('loginStatus','Login successful.');}catch(e){status('loginStatus',e.message);}};
 $('logoutBtn').onclick=()=>auth.signOut();
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab));});
-$('saveTeam').onclick=async()=>{const name=$('teamName').value.trim(),division=$('teamDivision').value;if(!name)return status('teamStatus','Team name is required.');const count=Object.entries(data.teams).filter(([id,t])=>(t.division||'league')===division&&id!==edit.team).length;if(count>=20)return status('teamStatus','This division already has 20 teams. Remove or move a team before adding another.');try{await save('teams',{name,division,logo:$('teamLogo').value.trim(),shortName:$('teamShort').value.trim()},edit.team);clearTeam();status('teamStatus','Team saved.');}catch(e){status('teamStatus',e.message);}};
+$('saveTeam').onclick=async()=>{const name=$('teamName').value.trim(),division=$('teamDivision').value;if(!name)return status('teamStatus','Team name is required.');const count=Object.entries(data.teams).filter(([id,t])=>(t.division||'league')===division&&id!==edit.team).length;if(count>=20)return status('teamStatus','This division already has 20 teams. Remove or move a team before adding another.');try{await save('teams',{name,division,logo:$('teamLogo').value.trim(),shortName:$('teamShort').value.trim()},edit.team);clearTeam();status('teamStatus','Team saved.');if(values(data.teams).filter(t=>(t.division||'league')===division).length===20){await generateAllFixtures(true);}}catch(e){status('teamStatus',e.message);}};
 $('clearTeam').onclick=clearTeam;
 $('saveMatch').onclick=async()=>{const h=data.teams[$('homeTeam').value],a=data.teams[$('awayTeam').value];if(!h||!a||$('homeTeam').value===$('awayTeam').value)return status('matchStatusText','Choose two different teams.');try{await save('matches',{competition:$('matchComp').value,date:$('matchDate').value,homeTeam:$('homeTeam').value,awayTeam:$('awayTeam').value,homeName:h.name,awayName:a.name,homeScore:Number($('homeScore').value)||0,awayScore:Number($('awayScore').value)||0,status:$('matchStatus').value,round:$('matchRound').value.trim()},edit.match);clearMatch();status('matchStatusText','Match saved.');}catch(e){status('matchStatusText',e.message);}};
 $('clearMatch').onclick=clearMatch;
 $('savePlayer').onclick=async()=>{const name=$('playerName').value.trim(),team=data.teams[$('playerTeam').value];if(!name||!team)return status('playerStatus','Player name and team are required.');try{await save('players',{name,teamId:$('playerTeam').value,teamName:team.name,goals:Number($('playerGoals').value)||0,assists:Number($('playerAssists').value)||0,cleanSheets:Number($('playerCS').value)||0,appearances:Number($('playerApps').value)||0},edit.player);clearPlayer();status('playerStatus','Player saved.');}catch(e){status('playerStatus',e.message);}};
 $('clearPlayer').onclick=clearPlayer;
+$('generateFixtures').onclick=()=>generateAllFixtures(false);
 document.addEventListener('click',e=>{const t=e.target;if(t.dataset.editTeam){const x=data.teams[t.dataset.editTeam];edit.team=t.dataset.editTeam;$('teamName').value=x.name;$('teamDivision').value=x.division||'league';$('teamLogo').value=x.logo||'';$('teamShort').value=x.shortName||'';window.scrollTo({top:0,behavior:'smooth'});}
 if(t.dataset.delTeam)del('teams',t.dataset.delTeam);
 if(t.dataset.editMatch){const x=data.matches[t.dataset.editMatch];edit.match=t.dataset.editMatch;$('matchComp').value=x.competition;$('matchDate').value=x.date||'';$('homeTeam').value=x.homeTeam;$('awayTeam').value=x.awayTeam;$('homeScore').value=x.homeScore;$('awayScore').value=x.awayScore;$('matchStatus').value=x.status;$('matchRound').value=x.round||'';}
