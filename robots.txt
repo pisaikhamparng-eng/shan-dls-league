@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://pisaikhamparng-eng.github.io/shan-dls-league/sitemap.xml
