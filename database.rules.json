@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "siteData": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === 'REPLACE_WITH_ADMIN_UID'"
+    }
+  }
+}
