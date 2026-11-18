@@ -86,7 +86,7 @@ footer{padding:27px 0;color:#8f9088;font-size:10px}.footer-inner{display:flex;ju
 </div></section>
 <section id="statistics"><div class="container">
 <div class="section-head"><div><div class="eyebrow">PLAYER PERFORMANCE</div><h2>SEASON STATISTICS</h2></div><div class="section-desc">Individual leaderboards will be updated from confirmed match statistics.</div></div>
-<div class="stat-grid"><article class="stat-card"><div class="stat-label">GOALSCORING</div><h3>TOP 10 SCORERS</h3><p>The leading goalscorers across the official competitions.</p></article><article class="stat-card"><div class="stat-label">CHANCE CREATION</div><h3>TOP 10 ASSISTS</h3><p>The players contributing the most assists.</p></article><article class="stat-card"><div class="stat-label">GOALKEEPING</div><h3>TOP 10 CLEAN SHEETS</h3><p>The goalkeepers with the most clean sheets.</p></article></div>
+<div style="margin:0 0 16px"><label for="statisticsFilter" style="display:block;color:#d8b45b;font-size:10px;letter-spacing:1px;margin-bottom:8px">SELECT COMPETITION / TOTAL</label><select id="statisticsFilter" style="background:#171a17;color:#f6f4ee;border:1px solid #554727;padding:12px;width:100%;max-width:420px"><option value="league">T1 · FIRST DIVISION</option><option value="championship">T2 · CHAMPIONSHIP</option><option value="cup">SHAN DLS CUP</option><option value="champions">SDCL · CHAMPIONS LEAGUE</option><option value="elite">SDE · ELITE</option><option value="t1all">T1 · ALL COMPETITIONS</option><option value="t2all">T2 · ALL COMPETITIONS</option><option value="all">ALL COMPETITIONS · ALL CLUBS</option></select></div><div class="stat-grid" id="statBoards"><article class="stat-card"><div class="stat-label">GOALSCORING</div><h3>TOP 10 SCORERS</h3><p>Match performance records will appear here.</p></article><article class="stat-card"><div class="stat-label">CHANCE CREATION</div><h3>TOP 10 ASSISTS</h3><p>Match performance records will appear here.</p></article><article class="stat-card"><div class="stat-label">GOALKEEPING</div><h3>TOP 10 CLEAN SHEETS</h3><p>Match performance records will appear here.</p></article></div>
 </div></section>
 <section id="about"><div class="container">
 <div class="section-head"><div><div class="eyebrow">OUR COMMUNITY</div><h2>ABOUT THE LEAGUE</h2></div></div>
@@ -142,9 +142,11 @@ document.getElementById('year').textContent=new Date().getFullYear();
   grid.innerHTML='<div style="grid-column:1/-1;color:#d8b45b;font-size:10px;letter-spacing:1px;margin-bottom:4px">TOTAL REGISTERED CLUBS: '+teams.length+' / 40</div>'+section('FIRST DIVISION',first)+section('CHAMPIONSHIP',second);
  }
  function renderStats(){
-  const cards=document.querySelectorAll('.stat-card');
-  const boards=[{key:'goals'},{key:'assists'},{key:'cleanSheets'}];
-  boards.forEach((b,i)=>{const arr=players.slice().sort((x,y)=>(Number(y[b.key])||0)-(Number(x[b.key])||0)).slice(0,10);const p=cards[i]?.querySelector('p');if(p)p.innerHTML=arr.length?arr.map((x,j)=>'<span style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #292d27"><span>'+(j+1)+'. '+esc(x.name)+' <small style="color:#999">('+esc(x.teamName)+')</small></span><b style="color:#f0d68d">'+(Number(x[b.key])||0)+'</b></span>').join(''):'No player stats published yet.';});
+  const filter=document.getElementById('statisticsFilter')?.value||'league';
+  const allowed=filter==='t1all'?['league','cup','champions']:filter==='t2all'?['championship','cup','elite']:filter==='all'?['league','championship','cup','champions','elite','supercup']:[filter];
+  const sums={};matches.filter(m=>m.status==='completed'&&allowed.includes(m.competition)).forEach(m=>(m.performances||[]).forEach(v=>{if(!v.playerId)return;const team=teams.find(t=>t.id===v.teamId);if(filter==='t1all'&&team?.division!=='league')return;if(filter==='t2all'&&team?.division!=='championship')return;const x=sums[v.playerId]||(sums[v.playerId]={name:v.playerName||players.find(p=>p.id===v.playerId)?.name||'Player',teamName:v.teamName||team?.name||'',goals:0,assists:0,cleanSheets:0,appearances:0,goalInvolvements:0});x.goals+=Number(v.goals)||0;x.assists+=Number(v.assists)||0;x.cleanSheets+=Number(v.cleanSheets)||0;x.appearances+=v.appeared||v.role&&v.role!=='none'?1:0;x.goalInvolvements+=Number(v.goals||0)+Number(v.assists||0);}));
+  const cards=document.querySelectorAll('#statBoards .stat-card'),boards=[{key:'goals',label:'TOP 10 SCORERS',unit:'GOALS'},{key:'assists',label:'TOP 10 ASSISTS',unit:'ASSISTS'},{key:'cleanSheets',label:'TOP 10 CLEAN SHEETS',unit:'CLEAN SHEETS'}];
+  boards.forEach((b,j)=>{const arr=Object.values(sums).sort((x,y)=>y[b.key]-x[b.key]).slice(0,10);const card=cards[j];if(!card)return;card.querySelector('h3').textContent=b.label;card.querySelector('p').innerHTML=arr.length?arr.map((x,n)=>'<span style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #292d27"><span>'+(n+1)+'. '+esc(x.name)+' <small style="color:#999">('+esc(x.teamName)+')</small></span><b style="color:#f0d68d">'+x[b.key]+'</b></span>').join(''):'No match performance entered yet.';});
  }
  try{
   if(!firebase.apps.length)firebase.initializeApp(cfg);
@@ -157,6 +159,7 @@ document.getElementById('year').textContent=new Date().getFullYear();
   },e=>console.warn('SHAN DLS live data unavailable:',e));
   document.querySelectorAll('[data-division]').forEach(b=>b.addEventListener('click',()=>{activeDivision=b.dataset.division;standings(activeDivision);}));
   document.querySelectorAll('[data-match]').forEach(b=>b.addEventListener('click',()=>{activeMatch=b.dataset.match;renderMatches(activeMatch);}));
+  document.getElementById('statisticsFilter')?.addEventListener('change',renderStats);
  }catch(e){console.warn('SHAN DLS live data unavailable:',e);}
 })();
 </script>
