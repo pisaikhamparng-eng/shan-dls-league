@@ -101,5 +101,51 @@ const matchLabels={all:'ALL COMPETITIONS',league:'SHAN DLS LEAGUE',championship:
 document.querySelectorAll('[data-match]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-match]').forEach(b=>b.setAttribute('aria-selected',String(b===btn)));document.getElementById('matchFilterLabel').textContent=matchLabels[btn.dataset.match];}));
 document.getElementById('year').textContent=new Date().getFullYear();
 </script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+(async()=>{
+ const cfg=window.SHAN_FIREBASE_CONFIG;
+ if(!cfg||String(cfg.apiKey).includes('PASTE_')) return;
+ try{
+  if(!firebase.apps.length) firebase.initializeApp(cfg);
+  const snap=await firebase.database().ref('siteData').once('value');
+  const data=snap.val()||{}, teams=Object.entries(data.teams||{}).map(([id,x])=>({id,...x})), matches=Object.entries(data.matches||{}).map(([id,x])=>({id,...x})), players=Object.values(data.players||{});
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const divName=d=>d==='championship'?'CHAMPIONSHIP':'SHAN DLS LEAGUE';
+  function standings(div){
+   const rows=teams.filter(t=>(t.division||'league')===div).map(t=>({id:t.id,name:t.name,logo:t.logo||'',MP:0,W:0,D:0,L:0,GF:0,GA:0,PTS:0}));
+   const map=Object.fromEntries(rows.map(r=>[r.id,r]));
+   matches.filter(m=>m.status==='completed'&&m.competition===div&&map[m.homeTeam]&&map[m.awayTeam]).forEach(m=>{
+    const h=map[m.homeTeam],a=map[m.awayTeam],hs=Number(m.homeScore)||0,as=Number(m.awayScore)||0;
+    h.MP++;a.MP++;h.GF+=hs;h.GA+=as;a.GF+=as;a.GA+=hs;
+    if(hs>as){h.W++;h.PTS+=3;a.L++;}else if(as>hs){a.W++;a.PTS+=3;h.L++;}else{h.D++;a.D++;h.PTS++;a.PTS++;}
+   });
+   rows.sort((a,b)=>b.PTS-a.PTS||(b.GF-b.GA)-(a.GF-a.GA)||b.GF-a.GF||a.name.localeCompare(b.name));
+   $('standingRows').innerHTML=rows.length?rows.map((r,i)=>'<tr><td>'+(i+1)+'</td><td><strong>'+esc(r.name)+'</strong></td><td>'+r.MP+'</td><td>'+r.W+'</td><td>'+r.D+'</td><td>'+r.L+'</td><td>'+r.GF+'</td><td>'+r.GA+'</td><td>'+(r.GF-r.GA>0?'+':'')+(r.GF-r.GA)+'</td><td><strong>'+r.PTS+'</strong></td></tr>').join(''):'<tr><td colspan="10"><div class="empty-state"><h3>Teams will be announced soon</h3><p>Official team list is not published yet.</p></div></td></tr>';
+   $('tableTitle').textContent=divName(div);$('teamCount').textContent=rows.length+' CLUBS';
+  }
+  const $=id=>document.getElementById(id);
+  document.querySelectorAll('[data-division]').forEach(b=>b.addEventListener('click',()=>standings(b.dataset.division)));
+  standings('league');
+  const compNames={league:'SHAN DLS LEAGUE',championship:'SHAN DLS CHAMPIONSHIP',cup:'SHAN DLS CUP',champions:'SHAN DLS CHAMPIONS LEAGUE',elite:'SHAN DLS ELITE LEAGUE',supercup:'SHAN DLS SUPER CUP'};
+  function renderMatches(filter='all'){
+   const filtered=matches.filter(m=>filter==='all'||(filter==='continental'?['champions','elite'].includes(m.competition):m.competition===filter)).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+   const host=document.querySelector('#fixtures .empty-state');
+   if(!host)return;
+   host.innerHTML=filtered.length?'<div style="display:grid;gap:10px;text-align:left">'+filtered.map(m=>'<div style="padding:14px;border:1px solid #30352e;background:#111511"><div style="font-size:9px;letter-spacing:1.5px;color:#d8b45b;margin-bottom:8px">'+esc(compNames[m.competition]||m.competition)+' · '+esc(m.date||'DATE TBA')+' · '+esc(m.status==='completed'?'FULL TIME':'UPCOMING')+'</div><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:800"><span>'+esc(m.homeName)+'</span><strong style="color:#f0d68d;white-space:nowrap">'+(m.status==='completed'?esc(m.homeScore)+' - '+esc(m.awayScore):'VS')+'</strong><span style="text-align:right">'+esc(m.awayName)+'</span></div>'+(m.round?'<div style="font-size:10px;color:#999;margin-top:8px">'+esc(m.round)+'</div>':'')+'</div>').join('')+'</div>':'<h3>No matches published yet</h3><p>Official fixtures and results will appear here when added by the league admin.</p>';
+  }
+  document.querySelectorAll('[data-match]').forEach(b=>b.addEventListener('click',()=>renderMatches(b.dataset.match)));
+  renderMatches('all');
+  const clubGrid=document.querySelector('.club-grid');
+  if(clubGrid)clubGrid.innerHTML=teams.length?teams.map(t=>'<div class="club-placeholder" style="border-style:solid"><div style="height:44px;display:grid;place-items:center;margin-bottom:9px">'+(t.logo?'<img src="'+esc(t.logo)+'" alt="" style="width:38px;height:38px;object-fit:contain">':'<span style="color:#d8b45b;font-weight:900">DLS</span>')+'</div><b style="color:#eee">'+esc(t.name)+'</b><div style="margin-top:6px;font-size:8px;color:#d8b45b">'+esc(divName(t.division))+'</div></div>').join(''):'<div class="club-placeholder">OFFICIAL CLUB LIST COMING SOON</div>';
+  const statCards=document.querySelectorAll('.stat-card');
+  const boards=[{label:'TOP 10 SCORERS',key:'goals',unit:'GOALS'},{label:'TOP 10 ASSISTS',key:'assists',unit:'ASSISTS'},{label:'TOP 10 CLEAN SHEETS',key:'cleanSheets',unit:'CLEAN SHEETS'}];
+  boards.forEach((b,i)=>{const arr=players.slice().sort((x,y)=>(Number(y[b.key])||0)-(Number(x[b.key])||0)).slice(0,10);const p=statCards[i]?.querySelector('p');if(p)p.innerHTML=arr.length?arr.map((x,j)=>'<span style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #292d27"><span>'+(j+1)+'. '+esc(x.name)+' <small style="color:#999">('+esc(x.teamName)+')</small></span><b style="color:#f0d68d">'+(Number(x[b.key])||0)+'</b></span>').join(''):'No player stats published yet.';});
+ }catch(e){console.warn('SHAN DLS live data unavailable:',e);}
+})();
+</script>
 </body>
 </html>
